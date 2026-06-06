@@ -1,0 +1,22 @@
+# Ignorar carpetas de compilación y archivos temporales
+obj/
+bin/
+.vscode/
+.vs/
+*.exe
+*.o
+*.a
+*.ilk
+*.pdb
+*.exp
+*.lib
+*.dll
+
+# Ignorar archivos temporales del sistemagit
+.DS_Store
+Thumbs.db
+
+# Excepciones: Queremos mantener bin/data
+# Primero ignoramos todo lo que está dentro de bin
+bin/*
+!bin/data/

@@ -6,21 +6,27 @@ void ofApp::setup() {
     ofEnableDepthTest();
 
     // 1. Carga el modelo OBJ
-    myModel.loadModel("bunny.obj");
+    myModel.loadModel("bunny.obj", true);
     myModel.setScaleNormalization(false);
+    myModel.setRotation(0, 180, 0, 1, 0); 
     mesh = myModel.getMesh(0);
 
     // normales del OBJ
     if (mesh.getNormals().empty() && mesh.getNumVertices() >= 3) {
         for (size_t i = 0; i < mesh.getNumVertices(); i++) {
-            mesh.addNormal(glm::vec3(0.0f, 0.0f, 0.0f)); 
+            mesh.addNormal(glm::vec3(0.0f, 0.0f, 1.0f)); // Vector base temporal
         }
         for (size_t i = 0; i < mesh.getNumVertices(); i += 3) {
             if (i + 2 < mesh.getNumVertices()) {
                 glm::vec3 v0 = mesh.getVertex(i);
                 glm::vec3 v1 = mesh.getVertex(i + 1);
                 glm::vec3 v2 = mesh.getVertex(i + 2);
-                glm::vec3 normalCalculada = glm::normalize(glm::cross(v1 - v0, v2 - v0));
+                
+                // Producto cruz para obtener la normal perpendicular a la cara
+                glm::vec3 arista1 = v1 - v0;
+                glm::vec3 arista2 = v2 - v0;
+                glm::vec3 normalCalculada = glm::normalize(glm::cross(arista1, arista2));
+                
                 mesh.setNormal(i, normalCalculada);
                 mesh.setNormal(i + 1, normalCalculada);
                 mesh.setNormal(i + 2, normalCalculada);

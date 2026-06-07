@@ -6,12 +6,13 @@ void ofApp::setup() {
     ofEnableDepthTest();
 
     // 1. Carga el modelo OBJ
-    myModel.loadModel("bunny.obj", true);
+    myModel.loadModel("Happy_Buddha.obj", true);
     myModel.setScaleNormalization(false);
-    myModel.setRotation(0, 180, 0, 1, 0); 
-    mesh = myModel.getMesh(0);
+    //myModel.setRotation(0, 180, 0, 1, 0); 
+    myModel.disableMaterials();
+    //mesh = myModel.getMesh(0);
 
-    // normales del OBJ
+    /*/ normales del OBJ
     if (mesh.getNormals().empty() && mesh.getNumVertices() >= 3) {
         for (size_t i = 0; i < mesh.getNumVertices(); i++) {
             mesh.addNormal(glm::vec3(0.0f, 0.0f, 1.0f)); // Vector base temporal
@@ -32,10 +33,11 @@ void ofApp::setup() {
                 mesh.setNormal(i + 2, normalCalculada);
             }
         }
-    }
+    }*/
 
     // 2. Cargar el par de Shaders
-    shader.load(ofToDataPath("vertex.glsl"), ofToDataPath("fragment.glsl"));
+    shader.load("vertex.glsl", "fragment.glsl");
+    //shader.load(ofToDataPath("vertex.glsl"), ofToDataPath("fragment.glsl"));
 
     // Inicializar estados
     cameraMode = 0;
@@ -80,8 +82,8 @@ void ofApp::draw() {
     shader.setUniform1i("u_shaderActive", shaderActive);
 
     // Dibuja la geometría
-    //myModel.drawFaces();
-    mesh.draw();
+    myModel.drawFaces();
+    //mesh.draw();
 
     shader.end();
     cam.end();

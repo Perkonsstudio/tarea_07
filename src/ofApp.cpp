@@ -6,11 +6,11 @@ void ofApp::setup() {
     ofEnableDepthTest();
 
     // 1. Carga el modelo OBJ
-    myModel.loadModel("Happy_Buddha.obj", true);
+    myModel.loadModel("dragon.obj", true);
     myModel.setScaleNormalization(false);
-    //myModel.setRotation(0, 180, 0, 1, 0); 
+    //myModel.setRotation(0, 0, 180, 1, 0); //no usar
     myModel.disableMaterials();
-    //mesh = myModel.getMesh(0);
+    //mesh = myModel.getMesh(0); //no usar
 
     /*/ normales del OBJ
     if (mesh.getNormals().empty() && mesh.getNumVertices() >= 3) {
@@ -37,7 +37,7 @@ void ofApp::setup() {
 
     // 2. Cargar el par de Shaders
     shader.load("vertex.glsl", "fragment.glsl");
-    //shader.load(ofToDataPath("vertex.glsl"), ofToDataPath("fragment.glsl"));
+    //shader.load(ofToDataPath("vertex.glsl"), ofToDataPath("fragment.glsl")); //no usar
 
     // Inicializar estados
     cameraMode = 0;
@@ -66,8 +66,21 @@ void ofApp::draw() {
     shader.begin();
 
     // Matrices de escalado para que el modelo se aprecie a la distancia de la cámara
-    glm::mat4 scaleMatrix = glm::scale(glm::vec3(90.0f, 90.0f, 90.0f));//AQUI
-    glm::mat4 modelMatrix = glm::translate(glm::vec3(0, -50.0f, 0)) * scaleMatrix;
+    glm::mat4 scaleMatrix = glm::scale(glm::vec3(300.0f, 300.0f, 300.0f));//AQUI
+    //conejo 90.0f, 90.0f, 90.0f
+    //buddah 1300.0f, 1300.0f, 1300.0f
+    //dragon 300.0f, 300.0f, 300.0f
+    glm::mat4 modelMatrix = glm::translate(glm::vec3(0, 0, 0)) * scaleMatrix;
+    //conejo 0, -50.0f, 0
+    //buddah 0, -150.0f, 0
+    //dragon 0, 0, 0
+    glm::mat4 rotMatrix = glm::rotate(glm::radians(180.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    //conejo 0.0f, 0.0f, 1.0f
+    //buddah 0.0f, 0.0f, 1.0f
+    //dragon 0.0f, 0.0f, 1.0f
+
+    //me rompe
+    //glm::mat4 modelMatrix = glm::translate(glm::vec3(0, 50.0f, 0)) * rotMatrix * scaleMatrix;
     
     glm::mat4 viewMatrix = cam.getModelViewMatrix();
     glm::mat4 projectionMatrix = cam.getProjectionMatrix();
@@ -83,7 +96,7 @@ void ofApp::draw() {
 
     // Dibuja la geometría
     myModel.drawFaces();
-    //mesh.draw();
+    //mesh.draw(); //no usar
 
     shader.end();
     cam.end();
